@@ -1,0 +1,4 @@
+Picklist Folder:C:\Users\jacki\Desktop\Jane Plan\Picklis
+Menu Folder:C:\Users\jacki\Desktop\Jane Plan\Menu\
+Upload Folder:C:\Users\jacki\Desktop\Jane Plan\Upload\
+NumRows:100

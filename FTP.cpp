@@ -10,6 +10,7 @@ using namespace std;
 
 int FTP::Upload()
 {
+    // testing github1
     //string s("eee");
     //LPCWSTR sc = s.c_str;
     ////LPCTSTR lpszTest = _T("Test String");
