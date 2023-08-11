@@ -20,7 +20,7 @@ namespace fs = std::filesystem;
 
 int main()
 {
-    cout << "Enter despatch date: ";
+    cout << "Enter despatch date as an integer day of a month (e.g. for despatch on the 3rd of the month, enter '3'): ";
     string despatchDate;
     cin >> despatchDate;
     Log log;
