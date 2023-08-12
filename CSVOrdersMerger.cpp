@@ -12,6 +12,7 @@
 #include "CSVFile.h"
 #include "Log.h"
 #include "UploadFile.h"
+#include "PickListRowIdealWorld.h"
 
 
 using namespace std;
@@ -54,15 +55,19 @@ int main()
         for (vector<vector<string>>::iterator it = pickList.begin(); it != pickList.end(); it++) // for each row in picklist file orderfile == upload file
         {
             int orderFileRowCount = 0; // for num file in upload file change
-            vector<string> pickListRow = *it;
-            int order_qty = stoi(pickListRow[21]);
+            //vector<string> pickListRow = *it;
+
+            PickListRow* pickListRow;
+            PickListRowIdealWorld plRowIdealWorld;
+            pickListRow = &plRowIdealWorld;
+            pickListRow->ExtractValues(*it);
+            //plRow->ExtractValues(pickListRow);
 
             vector<vector<string>> upload;
             ul.FillUploadFileColHeadings(upload);
 
-            string supplierItem = pickListRow[20];
-            string menuFilePath = cfg.menuFolderPath + supplierItem + ".csv";
             vector<vector<string>> menuFile;
+            string menuFilePath = cfg.menuFolderPath + pickListRow->supplierItem + ".csv";
             fail = csv.ReadCSV(menuFilePath, menuFile);
             if (fail)
                 return log.Pause(1);
@@ -77,7 +82,8 @@ int main()
                 if (!zero_qty)
                 {
                     orderFileRowCount++;
-                    fail = ul.FillUploadFileCommonValues(pickListRow, allUploadFileData, despatchDate, menuFileRow, order_qty);
+                    // TODO: pass ref below?
+                    fail = ul.FillUploadFileCommonValues(*pickListRow, allUploadFileData, despatchDate, menuFileRow, pickListRow->order_qty);
                     if (fail)
                         return log.Pause(1); // not sure if this will work - try catch...                    
                 }

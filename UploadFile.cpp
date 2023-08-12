@@ -2,6 +2,7 @@
 #include "UploadFile.h"
 #include "Config.h"
 #include <iostream>
+#include "PickListRowIdealWorld.h"
 
 bool UploadFile::CreateFilePath(const Config& cfg, string timeHrsMinsSecs, string& filePath, int fileIndex)
 {
@@ -58,44 +59,27 @@ bool UploadFile::FillUploadFileColHeadings(vector<vector<string>>& uploadFile)
 }
 
 //bool CSVFile::FillUploadFileCommonValues(const vector<string>& pickListRow, vector<string>& uploadRow, string& despatchDate)
-bool UploadFile::FillUploadFileCommonValues(const vector<string>& pickListRow, vector<vector<string>>& upload, const string& despatchDate, const vector<string>& menuFileRow, const int order_qty)
+bool UploadFile::FillUploadFileCommonValues(const PickListRow& pickListRow, vector<vector<string>>& upload, const string& despatchDate, const vector<string>& menuFileRow, const int order_qty)
 {
     int max_cols = 31;
-
+    
     try
     {
-        // names in wesupply_picklist
-        string orderNumber = pickListRow[4];
-        string lineNumber = pickListRow[5];//temp
-        string picklist = pickListRow[2];                       //picklist
-        string deliverToName = pickListRow[7];
-        string email = "";
-        string deliverToAddress1 = pickListRow[8].substr(0, 29);
-        string deliverToAddress2 = pickListRow[9];
-        string deliverToAddress3 = pickListRow[10];             //town
-        string deliverToAddress4 = pickListRow[11];             //county
-        string customerCountry = pickListRow[12];
-        string deliverToPostcode = pickListRow[13];
-        string customerAccountCode = pickListRow[14];           //eg 7161598
-        string customerTelephone = pickListRow[15];
-        string customerEmail = pickListRow[16];
-        string supplierItem = pickListRow[20];                  // use to open the menu file eg IW20DVCHOC.csv
-
         vector<string> uploadRow(16, "");
-        uploadRow[0] = orderNumber;
-        uploadRow[1] = picklist + "." + despatchDate;
-        uploadRow[2] = deliverToName;
-        uploadRow[3] = email;
-        uploadRow[4] = customerTelephone;
-        uploadRow[5] = deliverToAddress1;
-        uploadRow[6] = deliverToAddress2;
+        uploadRow[0] = pickListRow.orderNumber;
+        uploadRow[1] = pickListRow.picklist + "." + despatchDate;
+        uploadRow[2] = pickListRow.deliverToName;
+        uploadRow[3] = pickListRow.email;
+        uploadRow[4] = pickListRow.customerTelephone;
+        uploadRow[5] = pickListRow.deliverToAddress1;
+        uploadRow[6] = pickListRow.deliverToAddress2;
         uploadRow[7] = "";
-        uploadRow[8] = deliverToAddress3;
-        uploadRow[9] = deliverToPostcode;
-        if (customerCountry == "UNITED KINGDOM")
+        uploadRow[8] = pickListRow.deliverToAddress3;
+        uploadRow[9] = pickListRow.deliverToPostcode;
+        if (pickListRow.customerCountry == "UNITED KINGDOM")
             uploadRow[10] = "GB";                          // deliveryCountry // DONE TO HERE!!!!
         else
-            uploadRow[10] = customerCountry;
+            uploadRow[10] = pickListRow.customerCountry;
         int qtyOrdered;
 
         try
